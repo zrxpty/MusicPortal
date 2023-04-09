@@ -1,0 +1,53 @@
+﻿@using MusicPortal.WEB.Models.ViewModels;
+
+@{
+    ViewData["Title"] = "Главная страница";
+}
+@model IndexViewModel
+<main>
+    <section>
+        <form action="" method="post" class="row g-2">
+            <div class="col-auto">
+                <input class="form-control" name="searchString" placeholder="Поиск..." type="search">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" asp-action="Index" asp-controller="Home" type="submit">Поиск</button>
+            </div>
+        </form>
+       
+        <h3>Треки</h3>
+        <table class="table">
+            <tr><th>Трек</th><th>Жанр</th><th>Автор</th></tr>
+            @foreach (var u in Model.Musics)
+            {
+                <tr>
+                    <td><a asp-area="" asp-controller="Home" asp-action="MusicPage" asp-route-Id="@u.Id">@u.Name</a></td>
+                    <td>@u.Genre.ToString().Replace("_", " ")</td>
+                    <td><a asp-action="Details" asp-controller="Author"  asp-route-id="@u.Author.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">@u.Author.NickName</a></td>
+                
+                    
+                </tr>
+            }
+        </table>
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+            <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+           class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Назад
+            </a>
+        }
+        @if (Model.PageViewModel.HasNextPage)
+        {
+            <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+           class="btn btn-outline-dark">
+                Вперед
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+
+    </section>
+    
+</main>

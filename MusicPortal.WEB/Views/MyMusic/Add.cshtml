@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MusicPortal.DAL.Enum;
+@using MusicPortal.DAL.Models;
+@using MusicPortal.WEB.Models.ViewModels;
+
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+
+@{
+    ViewData["Title"] = "Создание трека";
+}
+
+@model MusicVM
+
+<form method="post" asp-action="Add" asp-controller="MyMusic" enctype="multipart/form-data">
+    <input type="hidden" value="@Model.Id" name="Id" />
+    <input type="hidden" value="@UserManager.GetUserName(User)" name="AuthorId" />
+    <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label>Название трека</label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Name" class="form-control" id="name"/>
+                        <span asp-validation-for="Name" class="text-danger" id="name"></span>
+                    </div>
+                </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label>Жанр</label>
+                </div>
+                <div class="col-8">
+                <select asp-for="Genre" class="custom-select" asp-items="@Html.GetEnumSelectList<GenreEnum>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="Genre" class="text-danger" />
+                </div>
+            </div>
+            <div class="form-group row">
+                    <div class="col-4">
+                        Загрузка файла
+                    </div>
+                    <div class="col-8">
+                        <input type="file" name="files" id="uploadBox" class="form-control" />
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                        <input type="submit" onclick="return validateInput()" class="btn btn-info w-100" value="Create" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+            @* Keep this empty *@
+            </div>
+        </div>
+
+</form>
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        function validateInput() {
+            if (document.getElementById("uploadBox").value == "" || document.getElementById("name").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Please upload an Music or set Name!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+}

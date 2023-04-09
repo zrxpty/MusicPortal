@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MusicPortal.DAL.Models;
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+@{
+    ViewData["Title"] = "Мои треки";
+}
+@model MusicPortal.WEB.Models.ViewModels.MusicVM
+<table class="table table-bordered table-striped" style="width:100%">
+
+    <a asp-area="" asp-controller="MyMusic" asp-action="Add"><input class="btn btn-primary" type="submit" value="Добавить трек" /></a>
+    <br />
+    <thead>
+        <tr>
+            <th>
+                Название трека
+            </th>
+            <th>
+                Жанр
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (MusicPortal.WEB.Models.ViewModels.MusicVM music in ViewBag.MyMusic)
+        {
+            <tr>
+                <td width="50%">@music.Name</td>
+                <td width="30%">@music.Genre</td>
+                <td class="text-center">
+                    @*<div class="w-75 btn-group" role="group">
+                        <a asp-controller="Category" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary mx-2">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-controller="Category" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger mx-2">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </div>*@
+                    <a asp-area="" asp-controller="Home" asp-action="MusicPage" asp-route-Id="@music.Id" class="btn btn-primary mx-2">
+                        <i>Посмотреть</i>
+                    </a>
+                    <a asp-area="" asp-controller="MyMusic" asp-action="Delete" asp-route-Id="@music.Id" class="btn btn-danger mx-2">
+                        
+                        <i> Удалить</i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

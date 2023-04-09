@@ -1,0 +1,85 @@
+﻿@model MusicPortal.WEB.Models.ViewModels.AuthorVM
+@using Microsoft.AspNetCore.Identity
+@using MusicPortal.DAL.Models;
+@using AutoMapper
+@inject IMapper Mapper
+
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+
+    <div class="col-lg-4 col-md-6 pb-4 filter @Model.NickName">
+        <!-- Card-->
+        <div class="card bg-white rounded shadow-sm" style="border:1px solid #222">
+            <div class="card-body px-3 pt-3 pb-1 row">
+                <div class="col-7"><label class="float-left">@Model.NickName</label></div>  
+            </div>
+        @if(Model.imagePath == null || Model.imagePath == "" || Model.imagePath.Length < 2)
+        {
+            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="@wc.AuthorPath/defaultImage.jpg" alt="Card image cap" style="border-radius: 8px;
+border: 1px solid #ddd;
+  padding: 5px;
+  width: 150px;">
+            
+        }
+        else
+        {
+            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="@wc.AuthorPath@Model.imagePath" alt="Card image cap" style="border-radius: 8px;
+border: 1px solid #ddd;
+  padding: 5px;
+  width: 150px;">
+        }
+           
+            <div>
+            Подписки @Model.Subscribe.Count()  Подписчики @Model.Subscribers.Count()
+            </div>
+            <div class="card-body p-1 px-3 row">
+                <div class="col-6">
+                <span class="badge p-2 border w-100" style="background-color:lavenderblush"><a class="text-dark">@(Model.Age.ToString().Split(" ")[0])</a></span>
+                </div>
+                <div class="col-6 border-0">
+                <span class="badge p-2 border w-100" style="background-color:aliceblue"><a class="text-dark">@Model.mainGenre.ToString().Replace("_", " ")</a></span>
+                </div>
+                
+                <div class="col-6 p-1">
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">Подробнее</a>
+                </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                
+                var author = Mapper.Map<Author>(Model);
+               
+                var currentUser = await UserManager.GetUserAsync(User);
+
+                if (author.Subscribers.Any(x => x.Id == currentUser.Id))
+                {
+                    <div class="col-6 p-1">
+                        <a asp-action="UnsubscribeFromAuthor" asp-route-Id="@Model.Id" class="btn btn-danger form-control btn-sm p-2">
+                            Отписаца
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-6 p-1">
+                        <a asp-action="SubscribeToAuthor" asp-route-Id="@Model.Id" class="btn btn-primary form-control btn-sm p-2">
+                            Подписаца
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+            <div class="col-6 p-1">
+                    <a class="btn btn-info form-control btn-sm p-2" id="login" asp-area="Identity" asp-page="/Account/Login">Log in</a>
+            </div>
+            }
+            
+
+           
+           
+
+
+
+            </div>
+        </div>
+    </div>

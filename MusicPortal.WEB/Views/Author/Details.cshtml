@@ -1,0 +1,180 @@
+﻿@model MusicPortal.WEB.Models.ViewModels.AuthorVM
+
+@{
+    ViewData["Title"] = "Автор - " + Model.NickName;
+}
+
+<section>
+    <div class="container">
+        @if (Model.imagePath == null || Model.imagePath == "" || Model.imagePath.Length < 2)
+        {
+            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="@wc.AuthorPath/defaultImage.jpg" alt="Картинка автора" style="border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            width: 150px;">
+        }
+        else
+        {
+            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="@wc.AuthorPath@Model.imagePath" alt="Картинка автора" style="border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            width: 150px;">
+        }
+        <h3>Имя: @Model.NickName, Основной жанр: @Model.mainGenre.ToString().Replace("_", " ")</h3>
+        <a>Возраст: @(Model.Age.ToString().Split(" ")[0])</a><br />
+        <p class="text-secondary"> Биография: @Html.Raw(@Model.Biography)</p>
+
+
+    </div>
+    @if (!string.IsNullOrEmpty(Model.linkInstagram))
+    {
+        <a href="@Model.linkInstagram">Instagram</a>
+
+        <br />
+    }
+    @if (!string.IsNullOrEmpty(Model.linkYouTube))
+    {
+        <a href="@Model.linkYouTube">Youtube</a>
+
+        <br />
+    }
+    @if (!string.IsNullOrEmpty(Model.linkVK))
+    {
+        <a href="@Model.linkVK">Vk</a>
+
+        <br />
+    }
+    @if (!string.IsNullOrEmpty(Model.linkOther))
+    {
+        <a href="@Model.linkOther">Другое</a>
+
+        <br />
+    }
+
+    <div class="dropdown">
+        <button class="dropbtn">Подписки</button>
+        <div class="dropdown-content">
+            @if(Model.Subscribe.Count > 0)
+            {
+                
+                @foreach (var item in Model.Subscribe)
+                {
+                    <li>
+                        <a asp-action="Details" asp-controller="Author" asp-route-id="@item.Id">
+                            @item.NickName
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li>Нет подписок</li>
+            }
+            
+        </div>
+        </div>
+
+        <div class="dropdown1">
+        <button class="dropbtn1">Подписчики</button>
+        <div class="dropdown-content1">
+            @if(Model.Subscribers.Count > 0)
+            {
+                
+                @foreach (var item in Model.Subscribers)
+                {
+                    <li>
+                        <a asp-action="Details" asp-controller="Author" asp-route-id="@item.Id">
+                            @item.NickName
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li>Нет нет подпичиков</li>
+            }
+            
+        </div>
+        </div>
+
+        <script>
+            var dropdownBtn = document.querySelector(".dropbtn");
+            var dropdownContent = document.querySelector(".dropdown-content");
+            dropdownBtn.addEventListener("click", function () {
+                dropdownContent.classList.toggle("show");
+            });
+            window.addEventListener("click", function (event) {
+                if (!event.target.matches(".dropbtn")) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains("show")) {
+                            openDropdown.classList.remove("show");
+                        }
+                    }
+                }
+            });
+
+        var dropdownBtn1 = document.querySelector(".dropbtn1");
+        var dropdownContent1 = document.querySelector(".dropdown-content1");
+        dropdownBtn1.addEventListener("click", function () {
+            dropdownContent1.classList.toggle("show1");
+        });
+        window.addEventListener("click", function (event) {
+            if (!event.target.matches(".dropbtn1")) {
+                var dropdowns1 = document.getElementsByClassName("dropdown-content1");
+                for (var i = 0; i < dropdowns1.length; i++) {
+                    var openDropdown1 = dropdowns1[i];
+                    if (openDropdown1.classList.contains("show1")) {
+                        openDropdown1.classList.remove("show1");
+                    }
+                }
+            }
+        });
+        </script>
+
+        <h3 class="h3">
+            Треки:
+        </h3>
+        @if (ViewBag.MusicsAuthor.Count == 0)
+        {
+            <p>Треков пока нет</p>
+        }
+        else
+        {
+            @foreach (var item in ViewBag.MusicsAuthor)
+            {
+                <div class="card mb-3" style="max-width: 700px;">
+                    <div class="row no-gutters">
+
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">Жанр: @item.Genre</p>
+                                <div class="audio-player">
+                                    <audio id="audio-player-@item.Id" src="@wc.MusicPath@item.filesMusic" type="audio/mp3" controls="controls"></audio>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+
+
+</section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('audio').mediaelementplayer({
+                alwaysShowControls: true,
+                features: ['playpause', 'volume', 'progress'],
+                audioVolume: 'horizontal',
+                audioWidth: 400,
+                audioHeight: 120
+            });
+        });
+    </script>
+}

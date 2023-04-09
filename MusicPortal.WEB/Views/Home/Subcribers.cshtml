@@ -1,0 +1,43 @@
+﻿@using MusicPortal.WEB.Models.ViewModels;
+@model IEnumerable<MusicPortal.WEB.Models.ViewModels.AuthorVM>
+@{
+    ViewData["Title"] = "Ваши подписки";
+}
+
+@foreach (var author in ViewBag.Subcribers)
+{
+    <div class="author-card">
+        @if (string.IsNullOrEmpty(author.imagePath) || string.IsNullOrEmpty(author.imagePath) || author.imagePath.Length < 2)
+        {
+            <div class="author-image-wrapper">
+                <a asp-action="Details" asp-controller="Author" asp-route-id="@author.Id">
+                    <img class="author-image" src="@wc.AuthorPath/defaultImage.jpg" alt="Картинка автора">
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="author-image-wrapper">
+                <a asp-action="Details" asp-controller="Author" asp-route-id="@author.Id">
+                    <img class="author-image" src="@($"{wc.AuthorPath}{author.imagePath}")" alt="Картинка автора">
+                </a>
+            </div>
+        }
+        <div class="author-info">
+            <h1 class="author-nickname">
+                <a asp-action="Details" asp-controller="Author" asp-route-id="@author.Id">
+                    @author.NickName
+                </a>
+            </h1>
+            <p class="author-age">
+                <a asp-action="Details" asp-controller="Author" asp-route-id="@author.Id">
+                    @author.Age
+                </a>
+            </p>
+            
+            <form method="post" asp-controller="Author" asp-action="UnsubscribeFromAuthorPost" asp-route-id="@author.Id">
+                <button type="submit" class="btn btn-danger">Отписаться</button>
+            </form>
+        </div>
+    </div>
+}
