@@ -70,9 +70,12 @@ namespace MusicPortal.DAL.Repositories
             return data.FirstOrDefault();
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        public async Task RemoveRange(IEnumerable<TEntity> entities)
         {
-            dbSet.RemoveRange(entities);
+            await Task.Run(() =>
+            {
+                dbSet.RemoveRange(entities);
+            });
         }
     }
 }
