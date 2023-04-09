@@ -14,9 +14,9 @@
                 <button class="btn btn-primary" asp-action="Index" asp-controller="Home" type="submit">Поиск</button>
             </div>
         </form>
-       
+       <div>
         <h3>Треки</h3>
-        <table class="table">
+        <table class="table" style="z-index:1;">
             <tr><th>Трек</th><th>Жанр</th><th>Автор</th></tr>
             @foreach (var u in Model.Musics)
             {
@@ -47,7 +47,7 @@
                 <i class="glyphicon glyphicon-chevron-right"></i>
             </a>
         }
-
+        </div>
     </section>
     
 </main>

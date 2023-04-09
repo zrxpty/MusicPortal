@@ -87,7 +87,7 @@ namespace MusicPortal.WEB.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "MyMusics");
                 }
 
             }
