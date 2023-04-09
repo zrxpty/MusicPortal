@@ -56,7 +56,7 @@ namespace MusicPortal.BLL.Services
                     .GetAll()
                     .Where(x => x.Musics.Id == id)
                     .ToListAsync();
-                _uow.GetRepository<MyMusic>().RemoveRange(relatedMyMusic);
+                await _uow.GetRepository<MyMusic>().RemoveRange(relatedMyMusic);
                 await _uow.SaveChangesAsync();
 
                 // Удаляем объект Music и сохраняем изменения

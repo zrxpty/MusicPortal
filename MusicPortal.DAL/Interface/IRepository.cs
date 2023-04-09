@@ -16,7 +16,7 @@ namespace MusicPortal.DAL.Interface
         Task<T> UpdateAsync(T item);
         
         Task DeleteAsync(T item);
-        void RemoveRange(IEnumerable<T> entities);
+        Task RemoveRange(IEnumerable<T> entities);
 
     }
 }
