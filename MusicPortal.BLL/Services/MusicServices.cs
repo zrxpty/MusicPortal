@@ -44,17 +44,27 @@ namespace MusicPortal.BLL.Services
             return item;
         }
 
-        
+
 
         public async Task DeleteAsync(Guid id)
         {
             Music music = await _uow.GetRepository<Music>().GetAsync(x => x.Id == id);
             if (music != null)
             {
+                // Удаляем связанные сущности MyMusic и сохраняем изменения
+                var relatedMyMusic = await _uow.GetRepository<MyMusic>()
+                    .GetAll()
+                    .Where(x => x.Musics.Id == id)
+                    .ToListAsync();
+                _uow.GetRepository<MyMusic>().RemoveRange(relatedMyMusic);
+                await _uow.SaveChangesAsync();
+
+                // Удаляем объект Music и сохраняем изменения
                 await _uow.GetRepository<Music>().DeleteAsync(music);
                 await _uow.SaveChangesAsync();
             }
         }
+
 
         public void Dispose()
         {

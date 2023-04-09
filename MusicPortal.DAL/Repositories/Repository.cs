@@ -69,5 +69,10 @@ namespace MusicPortal.DAL.Repositories
             }
             return data.FirstOrDefault();
         }
+
+        public void RemoveRange(IEnumerable<TEntity> entities)
+        {
+            dbSet.RemoveRange(entities);
+        }
     }
 }

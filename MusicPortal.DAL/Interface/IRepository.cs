@@ -14,8 +14,9 @@ namespace MusicPortal.DAL.Interface
         Task<T> GetAsync(Expression<Func<T, bool>>? predicate, params Expression<Func<T, object>>[]? incl);
         Task<T> CreateAsync(T item);
         Task<T> UpdateAsync(T item);
- 
-        Task DeleteAsync(T item);
         
+        Task DeleteAsync(T item);
+        void RemoveRange(IEnumerable<T> entities);
+
     }
 }
