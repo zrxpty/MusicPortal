@@ -40,7 +40,10 @@ namespace MusicPortal.WEB
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(connection));
 
-            services.AddDefaultIdentity<Author> (options => {
+            /*services.AddDbContext<AppDbContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("ps")));*/
+
+            services.AddDefaultIdentity<Author>(options => {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequireDigit = false;
@@ -52,7 +55,7 @@ namespace MusicPortal.WEB
             )
             .AddEntityFrameworkStores<AppDbContext>();
 
-           
+
 
             services.AddAutoMapper(typeof(MusicProfile));
             services.AddAutoMapper(typeof(AuthorProfile));
@@ -65,8 +68,8 @@ namespace MusicPortal.WEB
 
             services.AddRazorPages();
             services.AddControllersWithViews();
-            
-            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
