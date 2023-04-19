@@ -12,6 +12,13 @@ COPY ["MusicPortal.BLL/MusicPortal.BLL.csproj", "MusicPortal.BLL/"]
 COPY ["MusicPortal.DAL/MusicPortal.DAL.csproj", "MusicPortal.DAL/"]
 RUN dotnet restore "MusicPortal.WEB/MusicPortal.WEB.csproj"
 COPY . .
+WORKDIR "/src/MusicPortal.DAL"
+RUN dotnet tool install --global dotnet-ef --version 5.0.17
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN ls
+RUN dotnet-ef migrations add init --project ../MusicPortal.DAL/MusicPortal.DAL.csproj --startup-project ../MusicPortal.WEB/MusicPortal.WEB.csproj
+RUN dotnet ef database update
+
 WORKDIR "/src/MusicPortal.WEB"
 RUN dotnet build "MusicPortal.WEB.csproj" -c Release -o /app/build
 

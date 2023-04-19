@@ -6,14 +6,7 @@
 @model IndexViewModel
 <main>
     <section>
-        <form action="" method="post" class="row g-2">
-            <div class="col-auto">
-                <input class="form-control" name="searchString" placeholder="Поиск..." type="search">
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary" asp-action="Index" asp-controller="Home" type="submit">Поиск</button>
-            </div>
-        </form>
+        
        <div>
         <h3>Треки</h3>
         <table class="table" style="z-index:1;">
@@ -48,6 +41,10 @@
             </a>
         }
         </div>
+    </section>
+    <section>
+        <h3>Треки из подписок</h3>
+
     </section>
     
 </main>

@@ -45,11 +45,11 @@ namespace MusicPortal.WEB.Controllers
         }
         
         [HttpGet]
-        public IActionResult Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 3;
+            int pageSize = 5;
 
-        
+
             ICollection<MusicVM> musics = _mapper.Map<ICollection<MusicVM>>(_musicService.GetAll());
             var count = musics.Count();
             var items = musics.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -59,21 +59,38 @@ namespace MusicPortal.WEB.Controllers
                 PageViewModel = pageViewModel,
                 Musics = items
             };
+
+            var currentSigIn = await _userManager.GetUserAsync(User);
+            var currentUser = await _authorService.GetAsync(x => x.Id == currentSigIn.Id);
+
+
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Index(string? searchString)
+        public IActionResult Index(string? searchString, int page = 1)
         {
-           
-            if (searchString == null) searchString = "";
+            int pageSize = 5;
+            if (searchString == null) 
+                searchString = "";
             /*var emp = from e in _musicService.GetAll() where e.Name.ToLower().Contains(searchString) select e;*/
             var music = from e in _musicService.GetAll() where e.Name.ToLower().Contains(searchString) ||
                       e.Genre.ToString().ToLower().Contains(searchString) ||
                       e.Author.NickName.ToLower().Contains(searchString)
                       select e;
-            ViewBag.Musics = _mapper.Map<ICollection<MusicVM>>(music);
-            return View();
+            ICollection<MusicVM> musics = _mapper.Map<ICollection<MusicVM>>(music);
+            var count = musics.Count();
+            var items = musics.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                PageViewModel = pageViewModel,
+                Musics = items
+            };
+            var userIn = 
+            ViewBag.MyMusics = null;
+
+            return View(viewModel);
         }
 
 

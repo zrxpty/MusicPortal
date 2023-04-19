@@ -30,17 +30,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyMusic" asp-action="Index">Мои треки</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Авторы</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Subcribers">Подписки</a>
+                        
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                Мое
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-image: linear-gradient(to top left, rgba(255,0,0,0), rgba(255,0,0,1));">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="MyMusic" asp-action="Index">Мои треки</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Subcribers">Подписки</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="MyMusics" asp-action="Index">Мой треки</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MyMusics" asp-action="Index">Мой треки</a>
+                            <form action="" method="post" class="row g-2" style="margin-left: 100px;">
+                                <div class="col-auto">
+                                    <input class="form-control" name="searchString" placeholder="Поиск..." type="search">
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-primary" asp-action="Index" asp-controller="Home" type="submit">Поиск</button>
+                                </div>
+                            </form>
                         </li>
                     </ul>
                 </div>
