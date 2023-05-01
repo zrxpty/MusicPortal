@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace MusicPortal.WEB.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -41,14 +41,13 @@ namespace MusicPortal.WEB.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _webHostEnvironment = webHostEnvironment;
-            
+
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1)
         {
             int pageSize = 5;
-
 
             ICollection<MusicVM> musics = _mapper.Map<ICollection<MusicVM>>(_musicService.GetAll());
             var count = musics.Count();
@@ -60,8 +59,11 @@ namespace MusicPortal.WEB.Controllers
                 Musics = items
             };
 
-            var currentSigIn = await _userManager.GetUserAsync(User);
-            var currentUser = await _authorService.GetAsync(x => x.Id == currentSigIn.Id);
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentSigIn = await _userManager.GetUserAsync(User);
+                var currentUser = await _authorService.GetAsync(x => x.Id == currentSigIn.Id);
+            }
 
 
             return View(viewModel);
@@ -71,13 +73,14 @@ namespace MusicPortal.WEB.Controllers
         public IActionResult Index(string? searchString, int page = 1)
         {
             int pageSize = 5;
-            if (searchString == null) 
+            if (searchString == null)
                 searchString = "";
             /*var emp = from e in _musicService.GetAll() where e.Name.ToLower().Contains(searchString) select e;*/
-            var music = from e in _musicService.GetAll() where e.Name.ToLower().Contains(searchString) ||
+            var music = from e in _musicService.GetAll()
+                        where e.Name.ToLower().Contains(searchString) ||
                       e.Genre.ToString().ToLower().Contains(searchString) ||
                       e.Author.NickName.ToLower().Contains(searchString)
-                      select e;
+                        select e;
             ICollection<MusicVM> musics = _mapper.Map<ICollection<MusicVM>>(music);
             var count = musics.Count();
             var items = musics.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -87,7 +90,7 @@ namespace MusicPortal.WEB.Controllers
                 PageViewModel = pageViewModel,
                 Musics = items
             };
-            var userIn = 
+            var userIn =
             ViewBag.MyMusics = null;
 
             return View(viewModel);
@@ -100,7 +103,7 @@ namespace MusicPortal.WEB.Controllers
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var authors = await _authorService.GetAsync(x => x.Id == currentUser.Id);
-          
+
             ViewBag.Subcribers = authors.Subscribe;
             return View();
         }
@@ -109,7 +112,7 @@ namespace MusicPortal.WEB.Controllers
         public async Task<IActionResult> MusicPage(Guid id)
         {
             MusicVM music = _mapper.Map<MusicVM>(await _musicService.GetAsync(x => x.Id == id));
-        
+
             return View(music);
         }
     }
