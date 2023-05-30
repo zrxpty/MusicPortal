@@ -35,5 +35,7 @@ namespace MusicPortal.DAL.Models
 
         public List<Author> Subscribe { get; set; } =  new List<Author>();
         public List<Author> Subscribers { get; set; } = new List<Author>();
+
+        public Role Role { get; set; } = null;
     }
 }

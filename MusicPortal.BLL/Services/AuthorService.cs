@@ -28,12 +28,12 @@ namespace MusicPortal.BLL.Services
 
         public async Task<AuthorDTO> GetAsync(Expression<Func<Author, bool>> predicate)
         {
-            return _mapper.Map<AuthorDTO>(await _uow.GetRepository<Author>().GetAsync(predicate, x=> x.Musics, x => x.Subscribers, x=>x.Subscribe));
+            return _mapper.Map<AuthorDTO>(await _uow.GetRepository<Author>().GetAsync(predicate, x=> x.Musics, x => x.Subscribers, x=>x.Subscribe, x => x.Role));
         }
 
         public ICollection<AuthorDTO> GetAll() 
         { 
-            return _mapper.Map<ICollection<AuthorDTO>>(_uow.GetRepository<Author>().GetAll().Include(x => x.Subscribe).Include(x => x.Subscribers).Include(x=> x.Musics));
+            return _mapper.Map<ICollection<AuthorDTO>>(_uow.GetRepository<Author>().GetAll().Include(x => x.Subscribe).Include(x => x.Subscribers).Include(x=> x.Musics).Include(x => x.Role));
         }
 
         public Task DeleteAsync(Guid id)

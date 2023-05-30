@@ -16,6 +16,7 @@ namespace MusicPortal.DAL
         public DbSet<Music> Musics { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<MyMusic> MyMusics { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { 
             
@@ -29,9 +30,13 @@ namespace MusicPortal.DAL
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-            builder.Entity<IdentityRole>()
-                .HasData(new IdentityRole("Admin"),
-                         new IdentityRole("User"));
+            builder.Entity<Role>().HasData(
+                new Role[]
+                {
+                    new Role{ Id = 1, Name="User"},
+                    new Role{ Id = 2, Name="Admin"},
+                }
+                );
         
             
         }

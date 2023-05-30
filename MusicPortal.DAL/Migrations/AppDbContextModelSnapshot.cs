@@ -55,20 +55,6 @@ namespace MusicPortal.DAL.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "d193cf43-529b-48b7-8a7b-fd3e856cbb5b",
-                            ConcurrencyStamp = "5cbbbbf7-f7e8-41bd-a5d0-1b20fe9741c0",
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = "3c503951-9b2d-47ca-8b87-a3036bcb304b",
-                            ConcurrencyStamp = "47340007-64d3-43b2-aec5-1d4d25281cb7",
-                            Name = "User"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -296,6 +282,32 @@ namespace MusicPortal.DAL.Migrations
                     b.ToTable("MyMusics");
                 });
 
+            modelBuilder.Entity("MusicPortal.DAL.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin"
+                        });
+                });
+
             modelBuilder.Entity("MusicPortal.DAL.Models.Author", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -308,6 +320,9 @@ namespace MusicPortal.DAL.Migrations
 
                     b.Property<string>("NickName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("imagePath")
                         .HasColumnType("TEXT");
@@ -326,6 +341,8 @@ namespace MusicPortal.DAL.Migrations
 
                     b.Property<int?>("mainGenre")
                         .HasColumnType("INTEGER");
+
+                    b.HasIndex("RoleId");
 
                     b.HasDiscriminator().HasValue("Author");
                 });
@@ -418,6 +435,15 @@ namespace MusicPortal.DAL.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Musics");
+                });
+
+            modelBuilder.Entity("MusicPortal.DAL.Models.Author", b =>
+                {
+                    b.HasOne("MusicPortal.DAL.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("MusicPortal.DAL.Models.Author", b =>

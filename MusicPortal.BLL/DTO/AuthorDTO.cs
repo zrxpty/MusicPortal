@@ -30,5 +30,6 @@ namespace MusicPortal.BLL.DTO
         public string? linkOther { get; set; }
         public List<Author> Subscribe { get; set; } = new List<Author>();
         public List<Author> Subscribers { get; set; } = new List<Author>();
+        public Role Role { get; set; }
     }
 }

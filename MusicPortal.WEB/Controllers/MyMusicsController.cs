@@ -13,34 +13,31 @@ using Microsoft.AspNetCore.Localization;
 using System.Linq;
 using MusicPortal.WEB.Models.ViewModels;
 using System.Collections.Generic;
+using MusicPortal.DAL;
 
 namespace MusicPortal.WEB.Controllers
 {
     public class MyMusicsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+
         private readonly MyMusicService _myMusicsService;
         private readonly IMapper _mapper;
         private readonly UserManager<Author> _userManager;
-        private readonly SignInManager<Author> _signInManager;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-         private readonly IAuthorService _authorService;
+        
 
-        public MyMusicsController(IWebHostEnvironment webHostEnvironment, IMyMusicInterface mymusicsService, IMapper mapper, UserManager<Author> userManager,
-            SignInManager<Author> signInManager, IAuthorService authorService)
+        public MyMusicsController(
+            IWebHostEnvironment webHostEnvironment, IMyMusicInterface mymusicsService, IMapper mapper, UserManager<Author> userManager)
         {
-            _webHostEnvironment = webHostEnvironment;
             _myMusicsService = (MyMusicService)mymusicsService;
             _mapper = mapper;
             _userManager = userManager;
-            _signInManager = signInManager;
-            _authorService = authorService;
+
         }
 
         [Authorize]
         public async Task<IActionResult> AddMymusic(Guid id)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
+            var currentUser = await _userManager.GetUserAsync(User);         
             await _myMusicsService.AddAsync(id, Guid.Parse(currentUser.Id));
             return RedirectToAction("Index", "Home");
         }

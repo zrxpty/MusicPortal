@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<main>
+<div class="container">
+        <h1>Модерация треков</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Жанр</th>
+                    <th>Автор</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                        <tr>
+                            <td><a asp-area="" asp-controller="Home" asp-action="MusicPage" asp-route-Id="@item.Id">@item.Name</a></td>
+                            <td><a >@item.Genre</a></td>
+                        <td><a asp-action="Details" asp-controller="Author" asp-route-id="@item.Author.Id">@item.Author.NickName</a></td>
+                            
+                            <td>
+                                <a asp-action="DeleteMyMusic" asp-route-Id="@item.Id" class="btn btn-danger form-control btn-sm p-2">
+                                    Удалить
+                                </a>
+                            </td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>
+@section Scripts{
+            <script>
+                $(document).ready(function () {
+                    $('#audio-player').mediaelementplayer({
+                        alwaysShowControls: true,
+                        features: ['playpause', 'volume', 'progress'],
+                        audioVolume: 'horizontal',
+                        audioWidth: 400,
+                        audioHeight: 120
+                    });
+                });
+            </script>
+}
